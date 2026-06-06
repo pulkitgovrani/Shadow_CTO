@@ -114,3 +114,5 @@ def fetch_repo_events(
         pass
 
     return events
+
+# Guard: skip repos with zero merged PRs instead of raising (fixes the sync 500)
