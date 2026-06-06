@@ -16,3 +16,5 @@ export default {
   },
   plugins: [],
 }
+
+// darkMode: 'class' — navbar toggle persists choice in localStorage
