@@ -1,0 +1,38 @@
+# Generates a grounded changelog from merged PRs using the published action,
+# then deploys it to this repo's GitHub Pages.
+#
+# One-time setup (see steps below the demo):
+#   1. Settings → Secrets and variables → Actions → new secret: ANTHROPIC_API_KEY
+#   2. Settings → Pages → Source = "GitHub Actions"
+# Then: Actions tab → "Release Notes" → "Run workflow".
+name: Release Notes
+on:
+  workflow_dispatch: {}          # manual "Run workflow" button — best for the demo
+  release:
+    types: [published]           # also runs automatically on each published release
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}    # the live URL shows up here
+    steps:
+      # No checkout needed — the action reads this repo's PRs via the GitHub API.
+      - name: Generate release notes
+        uses: pulkitgovrani/release-notes-agent@v1
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          last: "8"              # the most recent 8 merged PRs (covers our 4 demo PRs)
+          version: v1.0
+          output: _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
