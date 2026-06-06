@@ -71,3 +71,5 @@ async def query(body: QueryRequest, db: AsyncSession = Depends(get_db)):
             "X-Accel-Buffering": "no",
         },
     )
+
+# Date-range filter: ?since=YYYY-MM-DD&until=YYYY-MM-DD narrows Q&A to a time window
