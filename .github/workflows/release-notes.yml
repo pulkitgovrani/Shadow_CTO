@@ -2,7 +2,7 @@
 # then deploys it to this repo's GitHub Pages.
 #
 # One-time setup (see steps below the demo):
-#   1. Settings → Secrets and variables → Actions → new secret: ANTHROPIC_API_KEY
+#   1. Settings → Secrets and variables → Actions → new secret: NVIDIA_API_KEY
 #   2. Settings → Pages → Source = "GitHub Actions"
 # Then: Actions tab → "Release Notes" → "Run workflow".
 name: Release Notes
@@ -27,7 +27,8 @@ jobs:
       - name: Generate release notes
         uses: pulkitgovrani/release-notes-agent@v1
         with:
-          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          provider: nvidia
+          nvidia-api-key: ${{ secrets.NVIDIA_API_KEY }}
           last: "8"              # the most recent 8 merged PRs (covers our 4 demo PRs)
           version: v1.0
           output: _site
